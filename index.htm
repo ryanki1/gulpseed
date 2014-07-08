@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ink Global Weather</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>  
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+</head>
+<body ng-app="igWeather">
+    <form id="pageContainer" class="form well well-lg" ng-controller="landingCtrl">
+        <div class="row">
+            <h1>{{title}}</h1>
+        </div>
+        <div class="row">
+            <select class="col-sm-6 col-md-3" ng-model="city" ng-options="city.name for city in cities | orderBy:'main.temp':tempDesc">
+                <option value="">
+                    Please select a city
+                </option>           
+            </select>
+            <div class="col-sm-6 col-md-3 mlminus15px form-group">
+                <label for="tempDescCheckbox">Sort Cities by Temperature, highest first</label>
+                <input id="tempDescCheckbox" type="checkbox" ng-model="tempDesc" ng-init="tempDesc=true"/>
+            </div>
+        </div>
+        <div class="row details" ng-if="city">
+            <p>City: {{city.name}}</p>
+            <p>Temperature: {{kelvinToCelsius(city.main.temp)}}</span>°C</p>
+            <p>Range: {{kelvinToCelsius(city.main.temp_min)}} °C to {{kelvinToCelsius(city.main.temp_max)}} °C</p>
+            <p>Longitude: {{lonlat(city.coord.lon)}} °{{city.coord.lon < 0 ? "W" : "E"}}</p>
+            <p>Latitude: {{lonlat(city.coord.lat)}} °{{city.coord.lat < 0 ? "S" : "N"}}</p>
+            <img ng-src="{{'http://openweathermap.org/img/w/' + city.weather[0].icon + '.png'}}" alt="Weather icon"/>
+            <p>Conditions: {{city.weather[0].description}}</p>
+            <p>Atmospheric Pressure: {{city.main.pressure}} hPa</p>
+            <p>Humidity: {{city.main.humidity}} %</p>
+        </div>
+    </form>
+    <!-- Third Party -->
+    <script src="bower_components/angular/angular.js" type="text/javascript"></script>
+    <!-- local app -->
+    <script src="app/config/build.js" type="text/javascript"></script>
+    <script src="app/app.js" type="text/javascript"></script>
+    <!-- App modules -->
+    <script src="scripts/module/landing/landingModule.js" type="text/javascript"></script>
+    <script src="scripts/module/shared/sharedModule.js" type="text/javascript"></script>
+    <!-- Controllers -->
+    <script src="scripts/module/landing/controller/landingCtrl.js" type="text/javascript"></script>
+    <!-- Services -->
+    <script src="scripts/module/shared/service/weatherService.js" type="text/javascript"></script>
+</body>
+</html>
+ 
